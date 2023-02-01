@@ -81,9 +81,11 @@ section {
     gap: 3rem;
 
     align-items: center;
+
+    text-align: center;
 }
 
-span:nth-child(2) {
+span {
     color: var(--white);
     font-size: 2.1rem;
 }

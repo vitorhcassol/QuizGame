@@ -88,4 +88,10 @@ export default {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
+@media (max-width: 425px) {
+    h4 {
+        font-size: 5rem;
+    }
+}
+
 </style>

@@ -247,10 +247,10 @@ export default {
     max-width: 102.4rem;
     border-radius: 2.5rem;
 
-    padding: 4.5rem 1.5rem 2.5rem 1.5rem;
+    padding: 2.5rem 1.5rem 2.5rem 1.5rem;
 
     display: grid;
-    grid-template-rows: 0.7fr 1fr;
+    grid-template-rows: 1fr;
     grid-template-areas: 
     'A'
     'B';
@@ -262,9 +262,6 @@ export default {
   .col-b {
     display: flex;
     flex-direction: column;
-
-    width: 100%;
-    height: 100%;
 
     justify-content: center;
     align-items: center;

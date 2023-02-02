@@ -17,19 +17,11 @@
         <h2> Question: {{ question }}</h2>
       </section>
       <!-- Apresentando as opções -->
-      <section id="options" class="col-b">
-        <button
-        v-for="(item, index) in this.answers" :key="index"
-        class="option"
-        :id="item"
-        @click="sendAnswer(item)"
-        >
-          {{ item }}
-        </button>
-      </section>
+      <Option @send-answer="this.sendAnswer" :answers="this.answers">
+      </Option>
     
-      <!-- Feedback -->
-      <section id="feedback" v-show="nextQuestion">
+      <!-- Próxima Questão -->
+      <section id="proximo" v-show="nextQuestion">
         <button @click="getQuestion(), resetButtons()"> Próxima questão </button>
       </section>
       <!-- Modal Game Over -->
@@ -43,18 +35,22 @@
         </GameOver>
       </transition>
     </div>
+
+    <!-- Link para o repositório do GitHub -->
+    <a href="https://github.com/vitorhcassol" target="_blank"><img src="@/assets/github-round-svgrepo-com.svg" alt="simbolo do GitHub, a silhueta da face de um gato"></a>
   </div>
 </template>
 
 <script>
 
-import Score from '@/components/Score.vue'
-import GameOver from '@/components/GameOver.vue'
 import StartScreen from '@/components/StartScreen.vue'
+import Score from '@/components/Score.vue'
+import Option from '@/components/Option.vue'
+import GameOver from '@/components/GameOver.vue'
 
 export default {
   components: {
-    Score, GameOver, StartScreen,
+    Score, GameOver, StartScreen, Option
   }, 
 
   data() {
@@ -80,6 +76,7 @@ export default {
   },
 
   computed: {
+    /* Retorna um array com as respostas de maneira sortida */
     answers() {
       let answers = JSON.parse(JSON.stringify(this.incorrectAnswers));
       answers.splice(Math.round(Math.random() * answers.length), 0, this.correctAnswer);
@@ -88,6 +85,14 @@ export default {
   },
 
   methods: {
+    /* Inicia o jogo, escondendo a tela de star e buscando uma questão */
+    startGame() {
+      this.showStartScreen = false;
+      this.showQuiz = true;
+      this.getQuestion()
+    },
+
+    /* Busca uma questão e suas respectivas respostas */
     getQuestion() {
       this.question = undefined;
       this.chosenAnswer = undefined;
@@ -102,6 +107,8 @@ export default {
       })
     },
 
+    /* Compara a resposta selecionada com a resposta correta
+    E retorna o feedback do acerto ou erro */
     sendAnswer(item) {
       this.chosenAnswer = item;
       if(this.chosenAnswer === this.correctAnswer) {
@@ -120,18 +127,24 @@ export default {
       }
     },
 
+    /* Caso a resposta selecionada seja a correta
+    Adiciona uma classe flash que muda o css da resposta */
     showCorrectAnswer() {
       let element = document.getElementById(this.correctAnswer);
 
       element.classList.add('flash');
     },
 
+    /* Caso a resposta selecionada seja incorreta
+    Adiciona uma classe error que muda o css da resposta */
     showIncorrectAnswer() {
       let element = document.getElementById(this.chosenAnswer);
 
       element.classList.add('error');
     },
 
+    /* Após uma resposta ser selecionada
+    esta função desabilita os botões de resposta */
     disableButtons() {
       let options = document.querySelectorAll('.option');
 
@@ -140,6 +153,8 @@ export default {
       })
     },
 
+    /* Seleciona todos os botões e retira seus estilos de acerto
+    erro ou disabled */
     resetButtons() {
       let options = document.querySelectorAll('.option');
 
@@ -150,6 +165,8 @@ export default {
       })
     },
 
+    /* Reinicia o jogo settando todos os dados como 
+    no modo inicial */
     tryAgain() {
         this.score = [];
         this.hit = 0;
@@ -159,13 +176,16 @@ export default {
         this.getQuestion();
     },
 
-    startGame() {
-      this.showStartScreen = false;
-      this.showQuiz = true;
+    /* Assim que a aplicação é carregada uma questão já é
+    imediatamente buscada */
+    created() {
+      this.getQuestion();
     }
   },
 
   watch: {
+    /* Método responsável por monitorar a quantidade de erros
+    Assim que 5 erros forem cometidos, a tela modal de fim de jogo 'Derrota' é apresentada */
     miss(newMiss) {
       if(newMiss === 5) {
         this.result = 'LOSE'
@@ -173,16 +193,14 @@ export default {
       }
     },
 
+    /* Método responsável por monitorar a quantidade de acertos
+    Assim que 5 acertos forem cometidos, a tela modal de fim de jogo "Vitória" é apresentada */
     hit(newHit) {
       if(newHit === 5) {
         this.result = 'WIN'
         this.showModal = true;
       }
     }
-  },
-
-  created() {
-    this.getQuestion()
   }
 }
 
@@ -258,19 +276,14 @@ export default {
     background-color: var(--primary-color);
   }
 
-  .col-a,
-  .col-b {
+  .col-a {
     display: flex;
     flex-direction: column;
 
     justify-content: center;
     align-items: center;
-  }
 
-  .col-a {
     grid-area: A;
-
-    display: flex;
 
     font-size: 2.1rem;
     font-weight: medium;
@@ -279,85 +292,29 @@ export default {
     gap: 3rem;
   }
 
-  .col-b {
-    grid-area: B;
-
-    padding: 3rem 0rem;
-
-    gap: 1.5rem;
-  }
-
-  .option {
-    background-color: var(--white);
-    color: var(--black);
-    opacity: 0.8;
-    border-radius: 1rem;
-    border: none;
-
-    padding: 1rem;
-
-    min-width: 20rem;
-
-    text-align: center;
-    font-weight: bold;
-
-    transition: opacity 0.16s, background-color 0.1, color 0.1;
-  }
-
-  .option:hover {
-    cursor: pointer;
-    opacity: 1;
-  }
-
-  .option:active {
-    background-color: var(--black);
-    color: var(--white);
-  }
-
-  #feedback {
+  #proximo {
     display: flex;
     justify-content: flex-end;
 
     padding-right: 1.5rem;
   }
 
-  #feedback button {
+  #proximo button {
     color: var(--black);
     border: none;
     background-color: transparent;
     text-decoration: underline;
   }
 
-  #feedback button:hover {
+  #proximo button:hover {
     cursor: pointer;
   }
 
-  .flash {
-    animation-name: flash;
-    animation-duration: 0.5s;
-    animation-iteration-count: 3;
+  body img {
+    width: 4rem;
 
-    background-color: var(--success);
-    color: var(--white);
-  }
-
-  .error {
-    background-color: var(--error);
-    color: var(--white)
-  }
-
-  @keyframes flash {
-    0% {
-      background-color: var(--success);
-      color: var(--white);
-    }
-    50% {
-      background-color: var(--white);
-      color: var(--black);
-    }
-    100% {
-      background-color: var(--success);
-      color: var(--white);
-    }
+    position: absolute;
+    top: calc(100% - 5rem);
+    right: calc(50% - 2rem);
   }
 </style>

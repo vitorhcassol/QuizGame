@@ -22,6 +22,7 @@
 
 export default {
     props: ['result', 'hit', 'miss'],
+    emits: ['close', 'tryAgain']
 }
 </script>
 

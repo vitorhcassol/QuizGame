@@ -29,7 +29,9 @@ import Atropos from 'atropos/vue';
 export default {
     components: {
         Atropos,
-    }
+    },
+
+    emits: ['startGame']
 }
 
 </script>

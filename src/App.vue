@@ -37,7 +37,7 @@
     </div>
 
     <!-- Link para o repositório do GitHub -->
-    <a href="https://github.com/vitorhcassol"><img src="@/assets/github-round-svgrepo-com.svg" alt="simbolo do GitHub, a silhueta da face de um gato"></a>
+    <a href="https://github.com/vitorhcassol" target="_blank"><img src="@/assets/github-round-svgrepo-com.svg" alt="simbolo do GitHub, a silhueta da face de um gato"></a>
   </div>
 </template>
 

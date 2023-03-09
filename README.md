@@ -1,4 +1,4 @@
-<a href="https://vitorhcassol.github.io/QuizGame/">
+<a href="https://vitorhcassol.github.io/QuizGame/" target="_blank">
   <h2>
     Projeto Game Quiz
   </h2>

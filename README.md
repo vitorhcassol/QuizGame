@@ -1,8 +1,6 @@
-<a href="https://vitorhcassol.github.io/QuizGame/" target="_blank">
-  <h2>
-    Projeto Game Quiz
-  </h2>
-</a>
+<h2>
+  <a href="https://vitorhcassol.github.io/QuizGame/" target="_blank"> Projeto Game Quiz </a>
+</h2>
 
 <p>
   Este projeto tem como objetivo exercitar pondo em prática os conhecimentos que eu venho acumulando em desenvolvimento front-end. Sendo estes conhecimentos:
